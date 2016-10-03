@@ -1,8 +1,11 @@
 var genericPool = require('generic-pool')
 var util = require('util')
 var EventEmitter = require('events').EventEmitter
-var objectAssign = require('object-assign')
-
+var objectAssign = require('object-assign')   // this is a polyfill for object.assign to not override native method.
+// this Pool basically use genericPool's API to implement postgres pool.
+// genericPool accepts the option argument we pass from the top and treat it as a factory.
+//Note that this.options.create is passed into as Pool.prototype._create to initialize a pool of Clients.
+// In this Pool object, all methods use promises.
 var Pool = module.exports = function (options, Client) {
   if (!(this instanceof Pool)) {
     return new Pool(options, Client)
